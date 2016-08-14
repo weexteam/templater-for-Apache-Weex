@@ -1,5 +1,6 @@
 var parse5 = require('parse5')
 var validator = require('./lib/validator')
+var richtext = require('./lib/richtext')
 
 /**
  * walk all nodes
@@ -46,7 +47,7 @@ function walk(node, output, previousNode) {
       case 'else':
       previousNode && previousNode.attrs.forEach(function (attr) {
         if (attr.name === 'if') {
-          validator.checkElse(attr.value, output)
+          validator.checkIf(attr.value, output, true)
         }
       })
       break
@@ -142,6 +143,8 @@ exports.parse = function parse(code, done) {
   current = rootElements[0]
 
   walk(current, output)
+
+  richtext.walkAndFormat(output.result)
 
   done(null, {
     jsonTemplate: output.result,

@@ -442,7 +442,7 @@ describe('parse', function () {
         type: 'container',
         children: [
           {type: 'text', attr: {value: function () {return this.data.items[0].title[0].valueDesc}}},
-          {type: 'text', attr: {value: function () {return (this.a) + ' and ' + (this.b[this.c.d][0]?'a':"b") + ' hhh ' + (parseInt("65"))}}}
+          {type: 'text', attr: {value: function () {return (this.a) + ' and ' + (this.b[this.c.d][0]?'a':'b') + ' hhh ' + (parseInt('65'))}}}
         ]
       },
       deps: ['container', 'text'],
@@ -524,6 +524,34 @@ describe('parse', function () {
       },
       deps: ['container', 'foo'],
       log: [{line: 1, column: 12, reason: 'WARNING: tag `component` should have an `is` attribute, otherwise it will be regarded as a `container`'}]
+    }
+    templater.parse(code, function (err, result) {
+      expect(stringify(result)).eql(stringify(expected))
+      done()
+    })
+  })
+
+  it('parse richtext', function (done) {
+    var code = '<container> <richtext> <text if="a" repeat="list"> {{xxx}} </text> <image id="{{x}}" class="a {{x}} c" src="{{y}}" style="opacity: {{z}}"></image> </richtext> <container> <text if="a" repeat="list">{{xxx}}</text> <image id="{{x}}" class="a {{x}} c" src="{{y}}" style="opacity: {{z}}"></image> </container> </container>'
+    var expected = {
+      jsonTemplate: {
+        type: 'container',
+        children: [{
+          type: 'richtext',
+          append: 'once',
+          attr: {
+            value: function () {return [{type: 'text', shown: this.a, repeat: this.list, attr: {value: this.xxx}}, {type: 'image', id: this.x, classList: ['a', this.x, 'c'], attr: {src: this.y}, style: {opacity: this.z}}]}
+          }
+        }, {
+          type: 'container',
+          children: [
+            {type: 'text', shown: function () {return this.a}, repeat: function () {return this.list}, attr: {value: function () {return this.xxx}}},
+            {type: 'image', id: function () {return this.x}, classList: function () {return ['a', this.x, 'c']}, attr: {src: function () {return this.y}}, style: {opacity: function () {return this.z}}}
+          ]
+        }]
+      },
+      deps: ['container', 'richtext', 'text', 'image'],
+      log: []
     }
     templater.parse(code, function (err, result) {
       expect(stringify(result)).eql(stringify(expected))
