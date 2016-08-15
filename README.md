@@ -135,11 +135,4 @@ var json = {
     }
   ]
 }
-
-styler.validate(json, function (err, data) {
-  err
-  data.jsonTemplate
-  data.deps[]
-  data.log[]
-})
 ```
