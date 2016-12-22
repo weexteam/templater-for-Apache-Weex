@@ -530,4 +530,28 @@ describe('parse', function () {
       done()
     })
   })
+
+  it('parse component set', function (done) {
+    var code = '<container><component is="{{item.type}}" repeat="item in list" set="component-a,component-b,component-c"></component></container>'
+    var expected = {
+      jsonTemplate: {
+        type: 'container',
+        children: [
+          {
+            type: function () {return this.item.type},
+            repeat: {
+              expression: function () {return this.list},
+              value: 'item'
+            }
+          }
+        ]
+      },
+      deps: ['container', 'component-a', 'component-b', 'component-c'],
+      log: []
+    }
+    templater.parse(code, function (err, result) {
+      expect(stringify(result)).eql(stringify(expected))
+      done()
+    })
+  })
 })
