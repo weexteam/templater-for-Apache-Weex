@@ -532,7 +532,7 @@ describe('parse', function () {
   })
 
   it('parse richtext', function (done) {
-    var code = '<container> <richtext> <text if="a" repeat="list"> {{xxx}} </text> <image id="{{x}}" class="a {{x}} c" src="{{y}}" style="opacity: {{z}}"></image> </richtext> <container> <text if="a" repeat="list">{{xxx}}</text> <image id="{{x}}" class="a {{x}} c" src="{{y}}" style="opacity: {{z}}"></image> </container> </container>'
+    var code = '<container> <richtext> <text style="padding: 8; color: {{active ? \'#ff0000\' : \'#00ff00\'}};"> {{xxx}} </text> </richtext> <richtext> <text if="a" repeat="list" class="a {{b}}"> {{xxx}} </text> <image class="a {{b}}" style="padding: 8; color: {{active ? \'#ff0000\' : \'#00ff00\'}};"></image> </richtext> <container> <text if="a" repeat="list">{{xxx}}</text> <image id="{{x}}" class="a {{x}} c" src="{{y}}" style="opacity: {{z}}"></image> </container> </container>'
     var expected = {
       jsonTemplate: {
         type: 'container',
@@ -540,9 +540,17 @@ describe('parse', function () {
           type: 'richtext',
           append: 'once',
           attr: {
-            value: function () {return [{type: 'text', shown: this.a, repeat: this.list, attr: {value: this.xxx}}, {type: 'image', id: this.x, classList: ['a', this.x, 'c'], attr: {src: this.y}, style: {opacity: this.z}}]}
+            value: function () {return [{type: 'text', style: {padding: 8, color: this.active?'#ff0000':'#00ff00'}, attr: {value: this.xxx}}]}
           }
-        }, {
+        },
+        {
+          type: 'richtext',
+          append: 'once',
+          attr: {
+            value: function () {return [{type: 'text', shown: this.a, repeat: this.list, style: (function () { var _s = this.classStyle; return Object.assign({}, _s['a'], _s[this.b]); }).call(this), attr: {value: this.xxx}}, {type: 'image', style: (function () { var _s = this.classStyle; return Object.assign({padding: 8, color: this.active?'#ff0000':'#00ff00'}, _s['a'], _s[this.b]); }).call(this)}]}
+          }
+        },
+        {
           type: 'container',
           children: [
             {type: 'text', shown: function () {return this.a}, repeat: function () {return this.list}, attr: {value: function () {return this.xxx}}},
