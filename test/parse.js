@@ -547,7 +547,7 @@ describe('parse', function () {
           type: 'richtext',
           append: 'once',
           attr: {
-            value: function () {return [{type: 'text', shown: this.a, repeat: this.list, style: (function () { var _s = this.classStyle; return Object.assign({}, _s['a'], _s[this.b]); }).call(this), attr: {value: this.xxx}}, {type: 'image', style: (function () { var _s = this.classStyle; return Object.assign({padding: 8, color: this.active?'#ff0000':'#00ff00'}, _s['a'], _s[this.b]); }).call(this)}]}
+            value: function () {return [{type: 'text', shown: this.a, repeat: this.list, style: (function () { var _s = this._css; return Object.assign({}, _s['a'], _s[this.b]); }).call(this), attr: {value: this.xxx}}, {type: 'image', style: (function () { var _s = this._css; return Object.assign({padding: 8, color: this.active?'#ff0000':'#00ff00'}, _s['a'], _s[this.b]); }).call(this)}]}
           }
         },
         {
