@@ -81,8 +81,8 @@ describe('parse', function () {
       },
       deps: ['container', 'text'],
       log: [
-        {line: 1, column: 1, reason: 'WARNING: `x` is not a standard property name'},
-        {line: 1, column: 1, reason: 'WARNING: `y` is not a standard property name'}
+        {line: 1, column: 1, reason: 'WARNING: `x` is not a standard property name (may not be supported)'},
+        {line: 1, column: 1, reason: 'WARNING: `y` is not a standard property name (may not be supported)'}
       ]
     }
     templater.parse(code, function (err, result) {
@@ -222,9 +222,9 @@ describe('parse', function () {
       log: [
         {line: 1, column: 25, reason: 'ERROR: property value `rgba(2,2,2,2)` is not valid for `background-color`'},
         {line: 1, column: 25, reason: 'NOTE: unit `px` is not supported and property value `8px` is autofixed to `8`'},
-        {line: 1, column: 109, reason: 'WARNING: `x` is not a standard property name'},
-        {line: 1, column: 109, reason: 'WARNING: `y` is not a standard property name'},
-        {line: 1, column: 109, reason: 'WARNING: `z` is not a standard property name'}
+        {line: 1, column: 109, reason: 'WARNING: `x` is not a standard property name (may not be supported)'},
+        {line: 1, column: 109, reason: 'WARNING: `y` is not a standard property name (may not be supported)'},
+        {line: 1, column: 109, reason: 'WARNING: `z` is not a standard property name (may not be supported)'}
       ]
     }
     templater.parse(code, function (err, result) {
@@ -464,7 +464,7 @@ describe('parse', function () {
         ]
       },
       deps: ['container', 'text'],
-      log: [{line: 1, column: 12, reason: 'WARNING: `-webkit-transform` is not a standard property name'}]
+      log: [{line: 1, column: 12, reason: 'WARNING: `-webkit-transform` is not a standard property name (may not be supported)'}]
     }
     templater.parse(code, function (err, result) {
       expect(stringify(result)).eql(stringify(expected))
