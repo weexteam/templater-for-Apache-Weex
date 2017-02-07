@@ -1,6 +1,6 @@
 {
   "name": "weex-templater",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Weex <template> transformer",
   "main": "index.js",
   "scripts": {
